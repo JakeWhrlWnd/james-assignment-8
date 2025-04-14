@@ -58,4 +58,7 @@ public class Assignment8 {
         return newList;
     }
 
+    @Test
+    public void getData() {}
+
 }
