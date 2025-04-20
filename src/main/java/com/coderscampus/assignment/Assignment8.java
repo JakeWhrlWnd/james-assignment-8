@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -80,7 +80,17 @@ public class Assignment8 {
     }
 
     public void filterNumbers(List<Integer> numbers) {
-        
+        Map<Integer, Integer> numberMap = new HashMap<>();
+
+        for (Integer number : numbers) {
+            if (number >= 1 && number <= 10) {
+                numberMap.merge(number, 1, Integer::sum);
+            }
+        }
+
+        numberMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> System.out.println(entry.getKey() + "=" + entry.getValue()));
     }
 
 }
