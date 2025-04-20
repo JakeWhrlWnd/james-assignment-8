@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -58,7 +61,26 @@ public class Assignment8 {
         return newList;
     }
 
-    @Test
-    public void getData() {}
+    public List<Integer> getData() {
+        ExecutorService pool = Executors.newCachedThreadPool();
+        List<CompletableFuture<List<Integer>>> tasks = new ArrayList<>();
+        List<Integer> allNumbers = new ArrayList<>();
+
+        for (int i = 0; i < 1000; i++) {
+            CompletableFuture<List<Integer>> task = CompletableFuture.supplyAsync(this::getNumbers, pool);
+            tasks.add(task);
+        }
+
+        CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
+        for (CompletableFuture<List<Integer>> task : tasks) {
+            allNumbers.addAll(task.join());
+        }
+
+        return allNumbers;
+    }
+
+    public void filterNumbers(List<Integer> numbers) {
+        
+    }
 
 }
