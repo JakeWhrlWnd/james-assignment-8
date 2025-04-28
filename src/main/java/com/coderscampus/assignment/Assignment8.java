@@ -66,15 +66,32 @@ public class Assignment8 {
         List<CompletableFuture<List<Integer>>> tasks = new ArrayList<>();
         List<Integer> allNumbers = new ArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
-            CompletableFuture<List<Integer>> task = CompletableFuture.supplyAsync(this::getNumbers, pool);
-            tasks.add(task);
+        try {
+            for (int i = 0; i < 1000; i++) {
+                CompletableFuture<List<Integer>> task = CompletableFuture.supplyAsync(this::getNumbers, pool);
+                tasks.add(task);
+            }
+
+
+            CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
+            for (CompletableFuture<List<Integer>> task : tasks) {
+                allNumbers.addAll(task.join());
+            }
+        } finally {
+            pool.shutdown();
+            try {
+                if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    pool.shutdownNow();
+                    if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                        System.err.println("Pool did not terminate");
+                    }
+                }
+            } catch (InterruptedException e) {
+                pool.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
 
-        CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
-        for (CompletableFuture<List<Integer>> task : tasks) {
-            allNumbers.addAll(task.join());
-        }
 
         return allNumbers;
     }
