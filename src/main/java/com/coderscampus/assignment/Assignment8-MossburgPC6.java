@@ -72,6 +72,7 @@ public class Assignment8 {
                 tasks.add(task);
             }
 
+
             CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
             for (CompletableFuture<List<Integer>> task : tasks) {
                 allNumbers.addAll(task.join());
