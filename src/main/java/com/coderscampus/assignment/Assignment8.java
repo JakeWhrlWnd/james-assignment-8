@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -95,36 +93,6 @@ public class Assignment8 {
         } catch (InterruptedException e) {
             pool.shutdownNow();
             Thread.currentThread().interrupt();
-        }
-    }
-
-    public void filterNumbers(List<Integer> numbers) {
-        if (numbers == null || numbers.isEmpty()) {
-            System.out.println("No numbers were found in the list.");
-            return;
-        }
-
-        Map<Integer, Integer> numberMap = new HashMap<>();
-        Integer min = null;
-        Integer max = null;
-
-        for (Integer number : numbers) {
-            numberMap.merge(number, 1, Integer::sum);
-
-            if (min == null || number < min) {
-                min = number;
-            }
-            if (max == null || number > max) {
-                max = number;
-            }
-        }
-
-        for (int i = min; i <= max; i++) {
-            int count = numberMap.getOrDefault(i, 0);
-            System.out.print(i + "=" + count);
-            if (i < max) {
-                System.out.print(", ");
-            }
         }
     }
 }
