@@ -15,7 +15,7 @@ public class NumberProcessingService {
     public void processNumbers() {
         List<Integer> numbers = fetchNumbers();
         List<Integer> filteredNumbers = filterNumbers(numbers);
-        Map<Integer, Integer> numberMap = countNumberOccurrences(filteredNumbers);
+        Map<Integer, Integer> numberMap = countNumberFrequency(filteredNumbers);
         printResults(numberMap);
     }
 
@@ -27,7 +27,7 @@ public class NumberProcessingService {
         return numbers;
     }
 
-    private Map<Integer, Integer> countNumberOccurrences(List<Integer> numbers) {
+    private Map<Integer, Integer> countNumberFrequency(List<Integer> numbers) {
         Map<Integer, Integer> numberMap = new HashMap<>();
 
         if (numbers == null || numbers.isEmpty()) {
