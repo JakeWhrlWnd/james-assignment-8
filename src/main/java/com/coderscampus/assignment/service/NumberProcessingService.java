@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class NumberProcessingService {
 
@@ -48,8 +49,10 @@ public class NumberProcessingService {
     }
 
     private void printResults(Map<Integer, Integer> numberMap) {
-        numberMap.forEach((number, count) -> {
-            System.out.print(number + "=" + count + ", ");
-        });
+        String numberOutput = numberMap.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.joining(","));
+
+        System.out.println(numberOutput);
     }
 }
